@@ -129,12 +129,14 @@
   <ItemGroup>
     <ClCompile Include="Diary.cpp" />
     <ClCompile Include="DiaryManager.cpp" />
+    <ClCompile Include="HeapSort.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Student.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Diary.hpp" />
     <ClInclude Include="DiaryManager.hpp" />
+    <ClInclude Include="HeapSort.hpp" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Student.hpp" />
   </ItemGroup>

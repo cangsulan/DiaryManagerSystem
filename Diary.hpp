@@ -16,6 +16,8 @@ public:
 	int views;//浏览量
 	string stuName;//日记作者的学生名字
 	string stuId;//日记作者的学生id
+
+	double compareItem;//排序时比较的标准，默认赋值为浏览量
 	Diary(int id, string stuName,string stuId);
 	Diary(int id, string content, string stuName, string stuId);
 

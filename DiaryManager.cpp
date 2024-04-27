@@ -96,18 +96,21 @@ void DiaryManager::sortDiaryOfPlace()
 	string wanted_place;
 	cin >> wanted_place;
 	vector<Diary*> placeRelevant;//把游学地点的日记找出来 放到这个vector里
-	for (auto diaryPtr : this->manager) {
+	int size=0;
+	for (auto& diaryPtr : this->manager) {
 		if (diaryPtr->place == wanted_place) {
 			placeRelevant.push_back(diaryPtr);
 		}
 	}
-	cout << "已找到 " << placeRelevant.size() << " 篇日记！" << endl;
-	if (placeRelevant.size() == 0) {
+	size = placeRelevant.size();
+	cout << "已找到 " << size<< " 篇日记！" << endl;
+	
+	if (size == 0) {
 		cout << "没有相关日记，无法推荐。。。" << endl;
 		return;
 	}
 	while (true) {
-		cout << "可选择推荐方式：" << endl;
+		cout << "可选择推荐方式：" << endl; //都是用 大根堆 堆排序，排出前10个即可！
 		cout << "1.热度 排行" << endl;
 		cout << "2.平均评分 排行" << endl;
 		cout << "3.行了，返回吧。" << endl;
@@ -116,10 +119,10 @@ void DiaryManager::sortDiaryOfPlace()
 		switch (select)
 		{
 		case 1:
-
+			heapsortEnter(placeRelevant,select);
 			break;
 		case 2:
-
+			heapsortEnter(placeRelevant, select);
 			break;
 		case 3:
 			return;

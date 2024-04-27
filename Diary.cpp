@@ -9,6 +9,7 @@ Diary::Diary(int id,string stuName, string stuId) {
 	this->stuName = stuName;
 	this->stuId = stuId;
 	this->content = "";//ÈÕ¼ÇÎª¿Õ
+	this->compareItem = this->views;
 }
 
 Diary::Diary(int id, string content, string stuName,string stuId) {
@@ -19,6 +20,7 @@ Diary::Diary(int id, string content, string stuName,string stuId) {
 	this->ratedSize = 0;
 	this->stuName = stuName;
 	this->stuId = stuId;
+	this->compareItem = this->views;
 }
 
 Diary::~Diary() {

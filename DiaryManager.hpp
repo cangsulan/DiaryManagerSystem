@@ -6,8 +6,7 @@
 #include <vector>
 #include "Student.hpp"
 #include "Diary.hpp"
-#include <queue>
-#include <functional> // std::less
+#include "HeapSort.hpp"
 class DiaryManager {
 public:
 	vector<Diary*> manager;
