@@ -7,7 +7,7 @@
 #include "Student.hpp"
 #include "Diary.hpp"
 #include <queue>
-#include <functional> // std::greater
+#include <functional> // std::less
 class DiaryManager {
 public:
 	vector<Diary*> manager;
