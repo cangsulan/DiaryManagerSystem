@@ -13,7 +13,8 @@ public:
 	Student *stu;
 	void showMenu();
 	void addDiary();
-	void showDiary();
+	void findDiary();
+	void showDiaryLogs();
 	DiaryManager();
 	~DiaryManager();
 private:

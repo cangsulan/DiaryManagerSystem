@@ -18,6 +18,7 @@ public:
 	Diary(int id, string content, string stuName, string stuId);
 
 	void showDiary();
+	void showDiarylog();
 	~Diary();
 
 private:

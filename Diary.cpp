@@ -2,6 +2,7 @@
 
 using namespace std;
 Diary::Diary(int id,string stuName, string stuId) {
+	this->id = id;
 	this->views = 0;
 	this->rating = 5;//创建时默认评分为5分
 	this->ratedSize = 0;
@@ -10,6 +11,7 @@ Diary::Diary(int id,string stuName, string stuId) {
 	this->content = "";//日记为空
 }
 Diary::Diary(int id, string content, string stuName,string stuId) {
+	this->id = id;
 	this->views = 0;
 	this->content = content;//日记不为空时
 	this->rating = 5;
@@ -47,4 +49,14 @@ void Diary::showDiary() {
 			return;
 		}
 	}
+}
+void Diary::showDiarylog() 
+{
+	cout << endl;
+	cout << "日记编号：" << this->id << endl;
+	cout << "作者名：" << this->stuName << endl;
+	cout << "\t\t作者学生id：" << this->stuId << endl;
+	cout << "浏览量：" << this->views;
+	cout << "\t\t平均评分：" << this->rating << endl;
+	cout << "---------------------------------" << endl;
 }

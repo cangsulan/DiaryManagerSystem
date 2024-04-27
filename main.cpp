@@ -19,26 +19,30 @@ int main() {
 	diarymanager.stu = student;//将学生对象的指针赋给管理系统
 	while (true) {
 		diarymanager.showMenu();
-		cout << "输入对应数字来选择功能" << endl;
+		cout << "输入对应数字来选择功能:" << endl;
+		cin.ignore(INT_MAX, '\n');//清空 输入缓冲区
 		int select = 0;
-		cin >> select;
+		scanf_s("%d", &select);//改成cin读入会出问题！！！
 		switch (select)
 		{
 		case 1://添加日记
 			diarymanager.addDiary();
 			system("pause");
 			break;
-		case 2://查看日记
-			
+		case 2://陈列所有日记的基础信息
+			diarymanager.showDiaryLogs();
 			system("pause");
 			break;
-		case 3://查询日记
+		case 3://查询 并 查看日记
+			diarymanager.findDiary();
 			system("pause");
 			break;
 		case 4://退出系统
 			system("pause");
 			return 0;
 		default:
+			cout << "输入错误！！" << endl;
+			system("pause");
 			break;
 		}
 	}
