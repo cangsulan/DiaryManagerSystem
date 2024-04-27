@@ -8,7 +8,10 @@ DiaryManager::DiaryManager()
 
 DiaryManager::~DiaryManager()
 {
-
+	delete this->stu;
+	for (auto diaryPtr : this->manager) {
+		delete diaryPtr;
+	}
 }
 
 void DiaryManager::showMenu() 
@@ -22,7 +25,8 @@ void DiaryManager::showMenu()
 	cout << "1.添加日记" << endl;
 	cout << "2.陈列所有日记信息" << endl;
 	cout << "3.查询 并 查看日记" << endl;
-	cout << "4.退出系统" << endl;
+	cout << "4.目的地 游学日记推荐" << endl;
+	cout << "5.退出系统" << endl;
 	cout << endl;
 }
 

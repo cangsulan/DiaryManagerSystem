@@ -53,7 +53,10 @@ int main() {
 			}
 			system("pause");
 			break;
-		case 4://退出系统
+		case 4://目的地 游学日记推荐
+
+			break;
+		case 5://退出系统
 			system("pause");
 			return 0;
 		default:
