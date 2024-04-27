@@ -25,7 +25,7 @@ void DiaryManager::showMenu()
 	cout << "1.添加日记" << endl;
 	cout << "2.陈列所有日记信息" << endl;
 	cout << "3.查询 并 查看日记" << endl;
-	cout << "4.目的地 游学日记推荐" << endl;
+	cout << "4.目的地 游学日记排序推荐" << endl;
 	cout << "5.退出系统" << endl;
 	cout << endl;
 }
@@ -90,3 +90,42 @@ void DiaryManager::showDiaryLogs()
 	}
 }
 
+void DiaryManager::sortDiaryOfPlace()
+{
+	cout << "请输入感兴趣的游学地点：" << endl;
+	string wanted_place;
+	cin >> wanted_place;
+	vector<Diary*> placeRelevant;//把游学地点的日记找出来 放到这个vector里
+	for (auto diaryPtr : this->manager) {
+		if (diaryPtr->place == wanted_place) {
+			placeRelevant.push_back(diaryPtr);
+		}
+	}
+	cout << "已找到 " << placeRelevant.size() << " 篇日记！" << endl;
+	if (placeRelevant.size() == 0) {
+		cout << "没有相关日记，无法推荐。。。" << endl;
+		return;
+	}
+	while (true) {
+		cout << "可选择推荐方式：" << endl;
+		cout << "1.热度 排行" << endl;
+		cout << "2.平均评分 排行" << endl;
+		cout << "3.行了，返回吧。" << endl;
+		int select;
+		cin >> select;
+		switch (select)
+		{
+		case 1:
+
+			break;
+		case 2:
+
+			break;
+		case 3:
+			return;
+		default:
+			cout << "输入有误哦~" << endl;
+			break;
+		}
+	}
+}

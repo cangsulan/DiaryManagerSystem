@@ -6,7 +6,8 @@
 #include <vector>
 #include "Student.hpp"
 #include "Diary.hpp"
-
+#include <queue>
+#include <functional> // std::greater
 class DiaryManager {
 public:
 	vector<Diary*> manager;
@@ -16,7 +17,7 @@ public:
 	void findDiaryById();//查询日记 通过 编号
 	void findDiaryByName();//查询日记 通过 名称 精准查询
 	void showDiaryLogs();//展示所有日记基本信息
-
+	void sortDiaryOfPlace();//目的地 游学日记排序推荐
 	DiaryManager();
 	~DiaryManager();
 private:
