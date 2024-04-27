@@ -5,5 +5,3 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include "Diary.cpp"
-#include "Student.hpp"

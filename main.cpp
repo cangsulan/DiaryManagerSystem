@@ -1,8 +1,9 @@
 #include "main.h"
 #include "Diary.hpp"
+#include "Student.hpp"
+#include "DiaryManager.hpp"
 using namespace std;
-void addDiary(vector<Diary*> *manager,Student* student);
-void menu();
+
 int main() {
 	Student* student=new Student();
 	cout << "请先输入您的姓名：" << endl;
@@ -13,42 +14,33 @@ int main() {
 	cin >> id;
 	student->name = name;
 	student->id = id;
-	menu();
-	vector<Diary*> *manager = new vector<Diary*>();
 
-	cout << "输入对应数字来选择功能" << endl;
-	int select = 0;
-	cin >> select;
-	switch (select)
-	{
-	case 1:
-		addDiary(manager,student);
-		break;
-	case 2:
-		break;
-	case 3:
-		break;
-	default:
-		break;
+	DiaryManager diarymanager;//建立日记管理系统类对象
+	diarymanager.stu = student;//将学生对象的指针赋给管理系统
+	while (true) {
+		diarymanager.showMenu();
+		cout << "输入对应数字来选择功能" << endl;
+		int select = 0;
+		cin >> select;
+		switch (select)
+		{
+		case 1://添加日记
+			diarymanager.addDiary();
+			system("pause");
+			break;
+		case 2://查看日记
+			
+			system("pause");
+			break;
+		case 3://查询日记
+			system("pause");
+			break;
+		case 4://退出系统
+			system("pause");
+			return 0;
+		default:
+			break;
+		}
 	}
 	return 0;
-}
-void menu()
-{
-	cout << "这是一个日记管理系统" << endl;
-
-	//排序展示日记代码
-	
-	//
-	cout << "1.添加日记" << endl;
-	cout << "2.查看日记" << endl;
-	cout << "3.查询日记" << endl;
-}
-void addDiary(vector<Diary*>* manager, Student* student)
-{
-	Diary *newdiary = new Diary(student);
-	cout << "请输入您日记的内容"<<endl;
-	cin >> newdiary->content;
-	manager->push_back(newdiary);
-	cout << "添加成功！" << endl;
 }

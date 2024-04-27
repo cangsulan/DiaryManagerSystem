@@ -134,9 +134,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Diary.hpp" />
-    <ClInclude Include="DiaryManager.h" />
+    <ClInclude Include="DiaryManager.hpp" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Student.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="diary1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

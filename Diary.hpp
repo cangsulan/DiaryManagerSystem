@@ -3,35 +3,23 @@
 #include <cstdio>
 #include <cmath>
 #include <string>
-#include "Student.hpp"
 using namespace std;
 class Diary
 {
 public:
-
-	string content;//评论的内容
-	int rating;//评分
+	int id;//日记的编号
+	string content;//日记的内容
+	float rating;//评分 ,计算和排序时用浮点数，打印时保留小数打印 
+	int ratedSize;//当前已有多少人进行过评分，用于计算平均评分，初始为0
 	int views;//浏览量
-	Student* stu;//日记的作者
-	Diary(Student* stu);
-	Diary(string content, Student* stu);
+	string stuName;//日记作者的学生名字
+	string stuId;//日记作者的学生id
+	Diary(int id, string stuName,string stuId);
+	Diary(int id, string content, string stuName, string stuId);
+
+	void showDiary();
 	~Diary();
 
 private:
 
 };
-Diary::Diary(Student* stu) {
-	this->views = 0;
-	this->rating = 5;//创建时默认评分为5分
-	this->stu = stu;
-	this->content = "";
-}
-Diary::Diary(string content, Student* stu) {
-	this->views = 0;
-	this->content = content;
-	this->rating = 5;
-	this->stu = stu;
-}
-Diary::~Diary() {
-
-}

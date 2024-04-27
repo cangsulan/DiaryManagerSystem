@@ -35,11 +35,14 @@
     <ClInclude Include="Diary.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="DiaryManager.h">
+    <ClInclude Include="DiaryManager.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="main.h">
       <Filter>头文件</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="diary1.txt" />
   </ItemGroup>
 </Project>
