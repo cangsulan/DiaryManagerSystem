@@ -10,6 +10,7 @@ Diary::Diary(int id,string stuName, string stuId) {
 	this->stuId = stuId;
 	this->content = "";//日记为空
 }
+
 Diary::Diary(int id, string content, string stuName,string stuId) {
 	this->id = id;
 	this->views = 0;
@@ -19,15 +20,18 @@ Diary::Diary(int id, string content, string stuName,string stuId) {
 	this->stuName = stuName;
 	this->stuId = stuId;
 }
+
 Diary::~Diary() {
 
 }
+
 void Diary::showDiary() {
 	this->views++;
 	cout << "日记编号：" << this->id;
 	cout << "\t\t日记名称：" << this->name << endl;
 	cout << "作者名：" << this->stuName;
 	cout << "\t\t作者学生id：" << this->stuId << endl;
+	cout << "游学地点：" << this->place << endl;
 	cout << "浏览量：" << this->views;
 	printf("\t\t平均评分：%.2f\n", this->rating);//保留2位小数打印！
 	cout << "以下为 日记内容：" << endl;
@@ -58,6 +62,7 @@ void Diary::showDiary() {
 		}
 	}
 }
+
 void Diary::showDiarylog() 
 {
 	cout << endl;
@@ -65,6 +70,7 @@ void Diary::showDiarylog()
 	cout << "\t\t日记名称：" << this->name << endl;
 	cout << "作者名：" << this->stuName;
 	cout << "\t\t作者学生id：" << this->stuId << endl;
+	cout << "游学地点：" << this->place << endl;
 	cout << "浏览量：" << this->views;
 	printf("\t\t平均评分：%.2f\n", this->rating);//保留2位小数打印！
 	cout << "---------------------------------" << endl;

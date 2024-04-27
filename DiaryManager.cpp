@@ -5,10 +5,12 @@ DiaryManager::DiaryManager()
 {
 
 }
+
 DiaryManager::~DiaryManager()
 {
 
 }
+
 void DiaryManager::showMenu() 
 {
 	system("cls");
@@ -23,16 +25,20 @@ void DiaryManager::showMenu()
 	cout << "4.退出系统" << endl;
 	cout << endl;
 }
+
 void DiaryManager::addDiary()
 {
 	Diary* newdiary = new Diary(this->manager.size() + 1,this->stu->name, this->stu->id);
 	cout << "请输入日记的 名称：" << endl;
 	cin >> newdiary->name;
+	cout << "请输入日记所属的 游学地点：" << endl;
+	cin >> newdiary->place;
 	cout << "请输入您日记的内容：" << endl;
 	cin >> newdiary->content;
 	this->manager.push_back(newdiary);
 	cout << "添加成功！" << endl;
 }
+
 void DiaryManager::findDiaryById()
 {
 	cout << "当前共收录有 " << this->manager.size() << " 篇日记，日记编号从1开始" << endl;
@@ -57,6 +63,7 @@ void DiaryManager::findDiaryById()
 	}*/
 	//cout << "对不起，未能找到该 编号 的日记。。。" << endl;
 }
+
 void DiaryManager::findDiaryByName()
 {
 	cout << "当前共收录有 " << this->manager.size() << " 篇日记" << endl;
@@ -71,9 +78,11 @@ void DiaryManager::findDiaryByName()
 	}
 	cout << "对不起，未能找到该日记。。。" << endl;
 }
+
 void DiaryManager::showDiaryLogs()
 {
 	for (auto diaryPtr : this->manager) {
 		diaryPtr->showDiarylog();
 	}
 }
+
