@@ -8,6 +8,7 @@ class Diary
 {
 public:
 	int id;//日记的编号
+	string name;//日记的名称
 	string content;//日记的内容
 	float rating;//评分 ,计算和排序时用浮点数，打印时保留小数打印 
 	int ratedSize;//当前已有多少人进行过评分，用于计算平均评分，初始为0

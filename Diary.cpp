@@ -24,7 +24,8 @@ Diary::~Diary() {
 }
 void Diary::showDiary() {
 	this->views++;
-	cout << "日记编号：" << this->id << endl;
+	cout << "日记编号：" << this->id;
+	cout << "\t\t日记名称：" << this->name << endl;
 	cout << "作者名：" << this->stuName;
 	cout << "\t\t作者学生id：" << this->stuId << endl;
 	cout << "浏览量：" << this->views;
@@ -60,7 +61,8 @@ void Diary::showDiary() {
 void Diary::showDiarylog() 
 {
 	cout << endl;
-	cout << "日记编号：" << this->id << endl;
+	cout << "日记编号：" << this->id;
+	cout << "\t\t日记名称：" << this->name << endl;
 	cout << "作者名：" << this->stuName;
 	cout << "\t\t作者学生id：" << this->stuId << endl;
 	cout << "浏览量：" << this->views;

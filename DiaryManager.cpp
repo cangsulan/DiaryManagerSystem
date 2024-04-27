@@ -26,25 +26,50 @@ void DiaryManager::showMenu()
 void DiaryManager::addDiary()
 {
 	Diary* newdiary = new Diary(this->manager.size() + 1,this->stu->name, this->stu->id);
-	cout << "请输入您日记的内容" << endl;
+	cout << "请输入日记的 名称：" << endl;
+	cin >> newdiary->name;
+	cout << "请输入您日记的内容：" << endl;
 	cin >> newdiary->content;
 	this->manager.push_back(newdiary);
 	cout << "添加成功！" << endl;
 }
-void DiaryManager::findDiary()
+void DiaryManager::findDiaryById()
 {
 	cout << "当前共收录有 " << this->manager.size() << " 篇日记，日记编号从1开始" << endl;
 	cout << "根据日记编号来查看相应日记，" << endl;
 	cout << "请输入要浏览的日记的 编号：" << endl;
 	int wanted_id;
 	cin >> wanted_id;
-	for (auto diaryPtr : this->manager) {
+	//就是按照编号排，没有乱的话，可以直接根据id找
+	if (wanted_id >= 1 && wanted_id <= this->manager.size()) {
+		this->manager.at(wanted_id - 1)->showDiary();
+	}
+	else {
+		cout << "对不起，未能找到该 编号 的日记。。。" << endl;
+	}
+	
+	//顺序查找
+	/*for (auto diaryPtr : this->manager) {
 		if (diaryPtr->id == wanted_id) {
 			diaryPtr->showDiary();
 			return;
 		}
+	}*/
+	//cout << "对不起，未能找到该 编号 的日记。。。" << endl;
+}
+void DiaryManager::findDiaryByName()
+{
+	cout << "当前共收录有 " << this->manager.size() << " 篇日记" << endl;
+	cout << "请输入要浏览的日记的 名称：" << endl;
+	string wanted_name;
+	cin >> wanted_name;
+	for (auto diaryPtr : this->manager) {
+		if (diaryPtr->name == wanted_name) {
+			diaryPtr->showDiary();
+			return;
+		}
 	}
-	cout << "对不起，未能找到该 编号 的日记。。。" << endl;
+	cout << "对不起，未能找到该日记。。。" << endl;
 }
 void DiaryManager::showDiaryLogs()
 {

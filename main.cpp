@@ -34,7 +34,23 @@ int main() {
 			system("pause");
 			break;
 		case 3://查询 并 查看日记
-			diarymanager.findDiary();
+			while (true) {
+				cout << "选择查询方式：" << endl;
+				cout << "1.通过 编号" << endl;
+				cout << "2.通过 名称 精准查询" << endl;
+				int by;
+				cin >> by;
+				if (by == 1) {
+					diarymanager.findDiaryById();
+					break;
+				}else if (by == 2) {
+					diarymanager.findDiaryByName();
+					break;
+				}
+				else {
+					cout << "输入有误哦~" << endl << endl;
+				}
+			}
 			system("pause");
 			break;
 		case 4://退出系统
