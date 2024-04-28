@@ -17,11 +17,14 @@ DiaryManager::~DiaryManager()
 void DiaryManager::showMenu() 
 {
 	system("cls");
-	cout << "这是一个日记管理系统" << endl;
-
+	
+	cout << "------------------------------------------------" << endl;
 	//排序展示日记代码
-
+	heapsortEnter(this->manager, 1);
 	//
+	cout << "这是一个日记管理系统" << endl;
+	cout << "以上为当前热度排行榜前10的日记~~~~~~" << endl;
+	cout << "------------------------------------------------" << endl;
 	cout << "1.添加日记" << endl;
 	cout << "2.陈列所有日记信息" << endl;
 	cout << "3.查询 并 查看日记" << endl;
