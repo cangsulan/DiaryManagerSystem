@@ -1,4 +1,10 @@
-﻿  DiaryManager.cpp
+﻿  Diary.cpp
+  DiaryManager.cpp
+  HeapSort.cpp
 D:\xinjian_xiangmu\DiaryManagerSystem\DiaryManager.cpp(38,51): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-D:\xinjian_xiangmu\DiaryManagerSystem\DiaryManager.cpp(108,27): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+D:\xinjian_xiangmu\DiaryManagerSystem\DiaryManager.cpp(111,27): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+D:\xinjian_xiangmu\DiaryManagerSystem\HeapSort.cpp(27,11): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\xinjian_xiangmu\DiaryManagerSystem\HeapSort.cpp(43,36): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+  main.cpp
+  正在生成代码...
   DiaryManagerSystem.vcxproj -> D:\xinjian_xiangmu\DiaryManagerSystem\x64\Debug\DiaryManagerSystem.exe

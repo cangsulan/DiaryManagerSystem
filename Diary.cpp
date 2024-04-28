@@ -8,18 +8,9 @@ Diary::Diary(int id,string stuName, string stuId) {
 	this->ratedSize = 0;
 	this->stuName = stuName;
 	this->stuId = stuId;
-	this->content = "";//日记为空
-	this->compareItem = this->views;
-}
-
-Diary::Diary(int id, string content, string stuName,string stuId) {
-	this->id = id;
-	this->views = 0;
-	this->content = content;//日记不为空时
-	this->rating = 5;
-	this->ratedSize = 0;
-	this->stuName = stuName;
-	this->stuId = stuId;
+	
+	//日记为空
+	
 	this->compareItem = this->views;
 }
 
@@ -37,7 +28,10 @@ void Diary::showDiary() {
 	cout << "浏览量：" << this->views;
 	printf("\t\t平均评分：%.2f\n", this->rating);//保留2位小数打印！
 	cout << "以下为 日记内容：" << endl;
-	cout << this->content << endl<<endl;
+	for (auto& diaryline : this->content){
+		cout << diaryline << endl;
+	}
+	cout << endl;
 	while (true) {
 		cout << "是否对该日记进行评分？" << endl;
 		cout << "1.是的" << endl;

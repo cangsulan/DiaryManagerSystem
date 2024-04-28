@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cmath>
 #include <string>
+#include <vector>
 using namespace std;
 class Diary
 {
@@ -10,7 +11,8 @@ public:
 	int id;//日记的编号
 	string name;//日记的名称
 	string place;//日记所记录的 游学目的地
-	string content;//日记的内容
+	vector<string> content;//日记的内容
+
 	float rating;//评分 ,计算和排序时用浮点数，打印时保留小数打印 
 	int ratedSize;//当前已有多少人进行过评分，用于计算平均评分，初始为0
 	int views;//浏览量
@@ -19,7 +21,6 @@ public:
 
 	double compareItem;//排序时比较的标准，默认赋值为浏览量
 	Diary(int id, string stuName,string stuId);
-	Diary(int id, string content, string stuName, string stuId);
 
 	void showDiary();
 	void showDiarylog();

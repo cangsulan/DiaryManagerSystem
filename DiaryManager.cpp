@@ -40,8 +40,11 @@ void DiaryManager::addDiary()
 	cin >> newdiary->name;
 	cout << "请输入日记所属的 游学地点：" << endl;
 	cin >> newdiary->place;
-	cout << "请输入您日记的内容：" << endl;
-	cin >> newdiary->content;
+	cout << "请输入您日记的内容：(多行，请输入完后回车，并在新的一行输入 \"eof\" 来结束)" << endl;
+	string diaryLine;
+	for (cin >> diaryLine; diaryLine != "eof"; cin >> diaryLine) {
+		newdiary->content.push_back(diaryLine);
+	}
 	this->manager.push_back(newdiary);
 	cout << "添加成功！" << endl;
 }
