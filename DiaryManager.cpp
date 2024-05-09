@@ -3,11 +3,12 @@ using namespace std;
 
 DiaryManager::DiaryManager()
 {
-
+	
 }
 
 DiaryManager::~DiaryManager()
 {
+	
 	delete this->stu;
 	for (auto diaryPtr : this->manager) {
 		delete diaryPtr;
@@ -137,4 +138,34 @@ void DiaryManager::sortDiaryOfPlace()
 			break;
 		}
 	}
+}
+
+void DiaryManager::CompressedStore()
+{
+	//先把所有日记进行序列化
+	ofstream tempOut("temp.dat", ios::binary);
+	for (const auto& diary : this->manager) {
+		diary->serialize(tempOut);
+	}
+	tempOut.close();
+	compressAndStore("temp.dat", "CompressedDiaries.dat");
+}
+
+void DiaryManager::LoadFromCompressedFile() {
+	decompressAndLoad("CompressedDiaries.dat", "loadTemp.dat");
+
+	ifstream inStream("loadTemp.dat", ios::binary);
+	if (!inStream) {
+		cerr << "无法打开文件: " << "loadTemp.dat" << endl;
+		return;
+	}
+
+	while (inStream.peek() != EOF) {
+		Diary* diary = new Diary();
+		diary->deserialize(inStream);
+		this->manager.push_back(diary);
+	}
+
+	inStream.close();
+
 }

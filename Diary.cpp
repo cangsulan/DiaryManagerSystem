@@ -14,6 +14,8 @@ Diary::Diary(int id,string stuName, string stuId) {
 	this->compareItem = this->views;
 }
 
+Diary::Diary(){}
+
 Diary::~Diary() {
 
 }
@@ -70,4 +72,75 @@ void Diary::showDiarylog()
 	cout << "浏览量：" << this->views;
 	printf("\t\t平均评分：%.2f\n", this->rating);//保留2位小数打印！
 	cout << "---------------------------------" << endl;
+}
+
+void Diary::serialize(ofstream& out)const
+{
+	out.write(reinterpret_cast<const char*>(&id), sizeof(id));
+
+	size_t nameLen = name.size();
+	out.write(reinterpret_cast<const char*>(&nameLen), sizeof(nameLen));
+	out.write(name.c_str(), nameLen);
+
+	size_t placeLen = place.size();
+	out.write(reinterpret_cast<const char*>(&placeLen), sizeof(placeLen));
+	out.write(place.c_str(), placeLen);
+
+	size_t contentSize = content.size();
+	out.write(reinterpret_cast<const char*>(&contentSize), sizeof(contentSize));
+	for (const auto& entry : content) {
+		size_t entryLen = entry.size();
+		out.write(reinterpret_cast<const char*>(&entryLen), sizeof(entryLen));
+		out.write(entry.c_str(), entryLen);
+	}
+
+	out.write(reinterpret_cast<const char*>(&rating), sizeof(rating));
+	out.write(reinterpret_cast<const char*>(&ratedSize), sizeof(ratedSize));
+	out.write(reinterpret_cast<const char*>(&views), sizeof(views));
+
+	size_t stuNameLen = stuName.size();
+	out.write(reinterpret_cast<const char*>(&stuNameLen), sizeof(stuNameLen));
+	out.write(stuName.c_str(), stuNameLen);
+
+	size_t stuIdLen = stuId.size();
+	out.write(reinterpret_cast<const char*>(&stuIdLen), sizeof(stuIdLen));
+	out.write(stuId.c_str(), stuIdLen);
+}
+void Diary::deserialize(ifstream& in)
+{
+	in.read(reinterpret_cast<char*>(&id), sizeof(id));
+
+	size_t nameLen;
+	in.read(reinterpret_cast<char*>(&nameLen), sizeof(nameLen));
+	name.resize(nameLen);
+	in.read(&name[0], nameLen);
+
+	size_t placeLen;
+	in.read(reinterpret_cast<char*>(&placeLen), sizeof(placeLen));
+	place.resize(placeLen);
+	in.read(&place[0], placeLen);
+
+	size_t contentSize;
+	in.read(reinterpret_cast<char*>(&contentSize), sizeof(contentSize));
+	content.resize(contentSize);
+	for (size_t i = 0; i < contentSize; ++i) {
+		size_t entryLen;
+		in.read(reinterpret_cast<char*>(&entryLen), sizeof(entryLen));
+		content[i].resize(entryLen);
+		in.read(&content[i][0], entryLen);
+	}
+
+	in.read(reinterpret_cast<char*>(&rating), sizeof(rating));
+	in.read(reinterpret_cast<char*>(&ratedSize), sizeof(ratedSize));
+	in.read(reinterpret_cast<char*>(&views), sizeof(views));
+
+	size_t stuNameLen;
+	in.read(reinterpret_cast<char*>(&stuNameLen), sizeof(stuNameLen));
+	stuName.resize(stuNameLen);
+	in.read(&stuName[0], stuNameLen);
+
+	size_t stuIdLen;
+	in.read(reinterpret_cast<char*>(&stuIdLen), sizeof(stuIdLen));
+	stuId.resize(stuIdLen);
+	in.read(&stuId[0], stuIdLen);
 }

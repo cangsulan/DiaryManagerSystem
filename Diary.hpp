@@ -4,6 +4,8 @@
 #include <cmath>
 #include <string>
 #include <vector>
+#include <fstream>
+
 using namespace std;
 class Diary
 {
@@ -21,7 +23,9 @@ public:
 
 	double compareItem;//排序时比较的标准，默认赋值为浏览量
 	Diary(int id, string stuName,string stuId);
-
+	Diary();//空参构造
+	void serialize(ofstream& out)const;//以二进制方式序列化
+	void deserialize(ifstream& in);//反序列化
 	void showDiary();
 	void showDiarylog();
 	~Diary();

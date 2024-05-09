@@ -47,8 +47,8 @@
     <ClInclude Include="HeapSort.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="diary1.txt" />
+    <ClInclude Include="Hafuman.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

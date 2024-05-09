@@ -5,3 +5,6 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include "Diary.hpp"
+#include "Student.hpp"
+#include "DiaryManager.hpp"

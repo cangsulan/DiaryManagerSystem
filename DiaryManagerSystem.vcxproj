@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,12 +137,10 @@
   <ItemGroup>
     <ClInclude Include="Diary.hpp" />
     <ClInclude Include="DiaryManager.hpp" />
+    <ClInclude Include="Hafuman.hpp" />
     <ClInclude Include="HeapSort.hpp" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Student.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="diary1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

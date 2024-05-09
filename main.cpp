@@ -1,7 +1,5 @@
+#pragma once
 #include "main.h"
-#include "Diary.hpp"
-#include "Student.hpp"
-#include "DiaryManager.hpp"
 using namespace std;
 
 int main() {
@@ -16,6 +14,7 @@ int main() {
 	student->id = id;
 
 	DiaryManager diarymanager;//建立日记管理系统类对象
+	diarymanager.LoadFromCompressedFile();
 	diarymanager.stu = student;//将学生对象的指针赋给管理系统
 	while (true) {
 		diarymanager.showMenu();
@@ -57,7 +56,8 @@ int main() {
 			diarymanager.sortDiaryOfPlace();
 			system("pause");
 			break;
-		case 5://退出系统
+		case 5://退出系统 并 保存日记所有改动
+			diarymanager.CompressedStore();
 			system("pause");
 			return 0;
 		default:
