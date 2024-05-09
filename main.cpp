@@ -1,8 +1,9 @@
 #pragma once
 #include "main.h"
 using namespace std;
-
+extern void testHafuman();
 int main() {
+	testHafuman();
 	Student* student=new Student();
 	cout << "请先输入您的姓名：" << endl;
 	string name;
