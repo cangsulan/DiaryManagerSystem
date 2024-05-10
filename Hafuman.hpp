@@ -44,11 +44,25 @@ inline void compressAndStore(const string& inputFilename, const string& outputFi
 // 解压缩比特流
 inline string decompressData(const string& bitString, HuffmanNode* root);
 // 解压缩并加载数据
-inline void decompressAndLoad(const string& compressedFilename, const string& outputFilename);
+inline void decompressAndLoad(const std::string& compressedFilename, const std::string& huffmanFilename, const std::string& outputFilename);
 // 重建哈夫曼树
 inline HuffmanNode* rebuildHuffmanTree(const unordered_map<unsigned char, string>& huffmanCodes);
 // 将字节数组转换为比特流
 inline string MybytesToBitString(const vector<unsigned char>& bytes);
+
+
+
+
+inline void printHuffmanTree(HuffmanNode* root, const std::string& prefix = "") {
+    if (!root) return;
+
+    std::cout << prefix << "Node: " << static_cast<int>(root->data) << ", Freq: " << root->freq << std::endl;
+    printHuffmanTree(root->left, prefix + "L-");
+    printHuffmanTree(root->right, prefix + "R-");
+}
+
+
+
 
 
 
@@ -101,7 +115,7 @@ string compressData(const vector<unsigned char>& data,
             compressed += huffmanCodes.at(ch);
         }
         else {
-            cerr << "键不存在: " << ch << endl; // 键不存在，处理异常情况
+            
         }
     }
     return compressed;
@@ -138,6 +152,24 @@ void compressAndStore(const string& inputFilename, const string& outputFilename)
     vector<unsigned char> rawData(fileSize);
     inputFile.read(reinterpret_cast<char*>(rawData.data()), fileSize);
     inputFile.close();
+    
+    //// 检查原始数据中的空白字符
+    //int bainum = 0;
+    //for (unsigned char ch : rawData) {
+    //    if (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r') {
+    //        // 原始数据中的空白字符
+    //        bainum++;
+    //        
+    //    }
+    //}
+    //std::cout << "空白字符：" << bainum << std::endl;
+    
+    cout << rawData.size() << endl;
+    for (auto& ch2 : rawData) {
+        cout << ch2;
+    }
+    cout << endl;
+    cout << "------------------------" << endl;
 
     unordered_map<unsigned char, int> freqMap;
     //
@@ -146,8 +178,22 @@ void compressAndStore(const string& inputFilename, const string& outputFilename)
 
         freqMap[ch]++;
     }
-
+    
+    
+    /*std::cout << "频率统计:" << std::endl;
+    for (const auto& entry : freqMap) {
+        std::cout << "字符: " << entry.first << ", 频率: " << entry.second << std::endl;
+    }*/
+    
+    
+    
     HuffmanNode* root = buildHuffmanTree(freqMap);
+
+    ////test测试：
+    //printHuffmanTree(root);
+    //cout << "----------------------------------------------" << endl;
+
+
     unordered_map<unsigned char, string> huffmanCodes;
     try {   
         buildHuffmanCodes(root, "", huffmanCodes); // 如果 root 不存在，确保不会抛出异常
@@ -157,7 +203,21 @@ void compressAndStore(const string& inputFilename, const string& outputFilename)
     }
 
     string compressedData = compressData(rawData, huffmanCodes);
+
     vector<unsigned char> compressedBytes = bitStringToBytes(compressedData);
+
+    //////test检测：
+    //cout << "原来的哈夫曼编码表为： size为 " <<huffmanCodes.size()<< endl;
+    //for (auto& entry2 : huffmanCodes) {
+    //    cout << entry2.first << "  :  " << entry2.second << endl;
+    //}
+    //cout << "--------------------------" << endl;
+    //cout << "压缩后的数据 为：" << compressData << endl;
+    //cout << "压缩后的字节：  size为 " <<compressedBytes.size()<< endl;
+    //for (unsigned char ch2 : compressedBytes) {
+    //    cout << ch2;
+    //}
+    //cout << endl;
 
     ofstream outputFile("HafumanCodes.dat", ios::binary);
     if (!outputFile) {
@@ -205,23 +265,27 @@ HuffmanNode* rebuildHuffmanTree(const unordered_map<unsigned char, string>& huff
     for (const auto& entry : huffmanCodes) {
         HuffmanNode* currentNode = root;
         const string& code = entry.second;
+        try {
+            for (unsigned char c : code) {
+                if (c == '0') {
+                    if (!currentNode->left) {
+                        currentNode->left = new HuffmanNode('\0'); // 确保节点存在
+                    }
+                    currentNode = currentNode->left;
+                }
+                else if (c == '1') {
+                    if (!currentNode->right) {
+                        currentNode->right = new HuffmanNode('\0'); // 确保节点存在
+                    }
+                    currentNode = currentNode->right;
+                }
+            }
 
-        for (char c : code) {
-            if (c == '0') {
-                if (!currentNode->left) {
-                    currentNode->left = new HuffmanNode('\0'); // 确保节点存在
-                }
-                currentNode = currentNode->left;
-            }
-            else if (c == '1') {
-                if (!currentNode->right) {
-                    currentNode->right = new HuffmanNode('\0'); // 确保节点存在
-                }
-                currentNode = currentNode->right;
-            }
+            currentNode->data = entry.first; // 确保叶子节点正确赋值
+        }catch(const std::exception& e){
+            
         }
-
-        currentNode->data = entry.first; // 确保叶子节点正确赋值
+        
     }
 
     return root;
@@ -237,91 +301,187 @@ string decompressData(const string& bitString, HuffmanNode* root) {
 
     string decompressed;
     HuffmanNode* currentNode = root;
-
-    for (char bit : bitString) {
-        if (bit == '0') {
-            if (!currentNode->left) {
-                throw std::runtime_error("解压缩过程中访问了 `NULL` 左节点"); // 处理 `NULL` 节点
+    try {
+        for (unsigned char bit : bitString) {
+            if (bit == '0') {
+                if (!currentNode->left) {
+                    throw std::runtime_error("解压缩过程中访问了 `NULL` 左节点"); // 处理 `NULL` 节点
+                }
+                currentNode = currentNode->left;
             }
-            currentNode = currentNode->left;
-        }
-        else if (bit == '1') {
-            if (!currentNode->right) {
-                throw std::runtime_error("解压缩过程中访问了 `NULL` 右节点"); // 处理 `NULL` 节点
+            else if (bit == '1') {
+                if (!currentNode->right) {
+                    throw std::runtime_error("解压缩过程中访问了 `NULL` 右节点"); // 处理 `NULL` 节点
+                }
+                currentNode = currentNode->right;
             }
-            currentNode = currentNode->right;
-        }
 
-        if (!currentNode->left && !currentNode->right) { // 叶子节点
-            decompressed += currentNode->data;
-            currentNode = root; // 回到根节点
+            if (!currentNode->left && !currentNode->right) { // 叶子节点
+                decompressed += currentNode->data;
+                currentNode = root; // 回到根节点
+            }
         }
+    }catch(const std::exception& e){
+
     }
 
     return decompressed;
 }
 
 
-// 解压缩并加载数据
-void decompressAndLoad(const string& compressedFilename, const string& outputFilename) {
-    ifstream inputFile(compressedFilename, ios::binary | ios::ate);
-    if (!inputFile) {
-        cerr << "无法打开文件: " << compressedFilename << endl;
+//// 解压缩并加载数据
+//void decompressAndLoad(const string& compressedFilename, const string& outputFilename) {
+//    ifstream inputFile(compressedFilename, ios::binary | ios::ate);
+//    if (!inputFile) {
+//        cerr << "无法打开文件: " << compressedFilename << endl;
+//        return;
+//    }
+//
+//    size_t fileSize = inputFile.tellg();
+//    inputFile.seekg(0, ios::beg);
+//
+//    vector<unsigned char> rawData(fileSize);
+//    inputFile.read(reinterpret_cast<char*>(rawData.data()), fileSize);
+//    inputFile.close();
+//
+//    istringstream dataStream(string(reinterpret_cast<const char*>(rawData.data()), rawData.size()));
+//    
+//    
+//    ifstream inputFile2("HafumanCodes.dat", ios::binary);
+//    if (!inputFile2) {
+//        cerr << "无法打开文件: " << "HafumanCodes.dat" << endl;
+//        return;
+//    }
+//    size_t huffmanTableSize;
+//    inputFile2.read(reinterpret_cast<char*>(&huffmanTableSize), sizeof(huffmanTableSize)); // 读取编码表大小
+//
+//    unordered_map<unsigned char, string> huffmanCodes;
+//    for (size_t i = 0; i < huffmanTableSize; i++) {
+//        unsigned char ch;
+//        inputFile.read(reinterpret_cast<char*>(&ch), 1); // 读取字符
+//
+//        size_t codeLen;
+//        inputFile.read(reinterpret_cast<char*>(&codeLen), sizeof(codeLen)); // 读取编码长度
+//
+//        string code(codeLen, '\0');
+//        inputFile.read(&code[0], codeLen); // 读取编码内容
+//
+//        huffmanCodes[ch] = code; // 添加到哈夫曼编码表
+//    }
+//
+//
+//    //////test检测：
+//    //cout << "解压缩时的哈夫曼编码表为： size为 " << huffmanCodes.size() << endl;
+//    //for (auto& entry2 : huffmanCodes) {
+//    //    cout << entry2.first << "  :  " << entry2.second << endl;
+//    //}
+//    //cout << "--------------------------" << endl;
+//
+//
+//    HuffmanNode* root = rebuildHuffmanTree(huffmanCodes); // 使用编码表重建哈夫曼树
+//
+//    // 使用哈夫曼树来解压缩
+//    /*vector<unsigned char> compressedData(rawData.begin() + dataStream.tellg(), rawData.end());*/
+//    string compressedBitString = MybytesToBitString(rawData);
+//
+//    string decompressedData = decompressData(compressedBitString, root);
+//
+//    ofstream outputFile(outputFilename, ios::binary);
+//    outputFile.write(decompressedData.c_str(), decompressedData.size());
+//    outputFile.close();
+//}
+
+void decompressAndLoad(const std::string& compressedFilename, const std::string& huffmanFilename, const std::string& outputFilename) {
+    // 打开压缩文件
+    std::ifstream compressedFile(compressedFilename, std::ios::binary | std::ios::ate);
+    if (!compressedFile) {
+        std::cerr << "无法打开压缩文件: " << compressedFilename << std::endl;
         return;
     }
 
-    size_t fileSize = inputFile.tellg();
-    inputFile.seekg(0, ios::beg);
+    // 读取压缩文件的内容
+    std::streamsize compressedFileSize = compressedFile.tellg();
+    compressedFile.seekg(0, std::ios::beg);
 
-    vector<unsigned char> rawData(fileSize);
-    inputFile.read(reinterpret_cast<char*>(rawData.data()), fileSize);
-    inputFile.close();
+    std::vector<unsigned char> compressedData(compressedFileSize);
+    compressedFile.read(reinterpret_cast<char*>(compressedData.data()), compressedFileSize);
+    compressedFile.close();
 
-    istringstream dataStream(string(reinterpret_cast<const char*>(rawData.data()), rawData.size()));
-    
-    
-    ifstream inputFile2("HafumanCodes.dat", ios::binary | ios::ate);
-    if (!inputFile2) {
-        cerr << "无法打开文件: " << "HafumanCodes.dat" << endl;
+    // 打开哈夫曼编码表文件
+    std::ifstream huffmanFile(huffmanFilename, std::ios::binary);
+    if (!huffmanFile) {
+        std::cerr << "无法打开哈夫曼编码表文件: " << huffmanFilename << std::endl;
         return;
     }
 
-    size_t fileSize2 = inputFile2.tellg();
-    inputFile2.seekg(0, ios::beg);
-
-    vector<unsigned char> rawData2(fileSize2);
-    inputFile2.read(reinterpret_cast<char*>(rawData2.data()), fileSize2);
-    inputFile2.close();
-
-    istringstream dataStream2(string(reinterpret_cast<const char*>(rawData2.data()), rawData2.size()));
-
-
+    // 读取哈夫曼编码表
     size_t huffmanTableSize;
-    dataStream2.read(reinterpret_cast<char*>(&huffmanTableSize), sizeof(huffmanTableSize));
+    huffmanFile.read(reinterpret_cast<char*>(&huffmanTableSize), sizeof(huffmanTableSize));
+    if (huffmanTableSize > 256) {
+        std::cerr << "编码表大小异常" << std::endl;
+        return;
+    }
 
-    unordered_map<unsigned char, string> huffmanCodes;
+    std::unordered_map<unsigned char, std::string> huffmanCodes;
     for (size_t i = 0; i < huffmanTableSize; i++) {
+        
         unsigned char ch;
-        dataStream2.read(reinterpret_cast<char*>(&ch), 1);
+        huffmanFile.read(reinterpret_cast<char*>(&ch), 1); // 读取字符
 
         size_t codeLen;
-        dataStream2.read(reinterpret_cast<char*>(&codeLen), sizeof(codeLen));
-
-        string code(codeLen, '\0');
-        dataStream2.read(&code[0], codeLen);
-
-        huffmanCodes[ch] = code; // 正确读取哈夫曼编码表
+        huffmanFile.read(reinterpret_cast<char*>(&codeLen), sizeof(codeLen)); // 读取编码长度
+        
+        std::string code(codeLen, '\0');
+        huffmanFile.read(&code[0], codeLen); // 读取编码内容
+        
+        huffmanCodes[ch] = code; // 保存到哈夫曼编码表
     }
 
-    HuffmanNode* root = rebuildHuffmanTree(huffmanCodes); // 使用编码表重建哈夫曼树
+    huffmanFile.close();
+    
 
-    // 使用哈夫曼树来解压缩
-    /*vector<unsigned char> compressedData(rawData.begin() + dataStream.tellg(), rawData.end());*/
-    string compressedBitString = MybytesToBitString(rawData);
+    
+    
+    //////test检测：
+    //cout << "解压缩时的哈夫曼编码表为： size为 " << huffmanCodes.size() << endl;
+    //for (auto& entry2 : huffmanCodes) {
+    //    cout << entry2.first << "  :  " << entry2.second << endl;
+    //}
+    //cout << "--------------------------" << endl;
 
-    string decompressedData = decompressData(compressedBitString, root);
 
-    ofstream outputFile(outputFilename, ios::binary);
+
+    // 使用哈夫曼编码表重建哈夫曼树
+    HuffmanNode* root = rebuildHuffmanTree(huffmanCodes);
+
+
+    ////test测试：
+    //printHuffmanTree(root);
+
+
+
+
+    // 将压缩后的字节转换为比特流
+    std::string compressedBitString;
+    for (unsigned char byte : compressedData) {
+        compressedBitString += std::bitset<8>(byte).to_string();
+    }
+
+    // 使用哈夫曼树进行解压缩
+    std::string decompressedData = decompressData(compressedBitString, root);
+
+    // 将解压缩后的数据写入输出文件
+    std::ofstream outputFile(outputFilename, std::ios::binary);
+    if (!outputFile) {
+        std::cerr << "无法打开输出文件: " << outputFilename << std::endl;
+        return;
+    }
+
+
+    cout << "--------------------" << endl;
+    cout << decompressedData << endl;
+
+
     outputFile.write(decompressedData.c_str(), decompressedData.size());
     outputFile.close();
 }

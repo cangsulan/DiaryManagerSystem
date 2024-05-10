@@ -21,6 +21,7 @@ void testHafuman() {
 	diarymanager.CompressedStore();
 	DiaryManager diarymanager2;
 	diarymanager2.LoadFromCompressedFile();
+	diarymanager2.manager.at(0)->showDiary();
 
 
 

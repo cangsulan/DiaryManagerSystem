@@ -4,6 +4,8 @@ using namespace std;
 extern void testHafuman();
 int main() {
 	testHafuman();
+	system("pause");
+	return 0;
 	Student* student=new Student();
 	cout << "请先输入您的姓名：" << endl;
 	string name;

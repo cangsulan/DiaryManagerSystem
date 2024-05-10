@@ -86,14 +86,6 @@ void Diary::serialize(ofstream& out)const
 	out.write(reinterpret_cast<const char*>(&placeLen), sizeof(placeLen));
 	out.write(place.c_str(), placeLen);
 
-	size_t contentSize = content.size();
-	out.write(reinterpret_cast<const char*>(&contentSize), sizeof(contentSize));
-	for (const auto& entry : content) {
-		size_t entryLen = entry.size();
-		out.write(reinterpret_cast<const char*>(&entryLen), sizeof(entryLen));
-		out.write(entry.c_str(), entryLen);
-	}
-
 	out.write(reinterpret_cast<const char*>(&rating), sizeof(rating));
 	out.write(reinterpret_cast<const char*>(&ratedSize), sizeof(ratedSize));
 	out.write(reinterpret_cast<const char*>(&views), sizeof(views));
@@ -105,6 +97,14 @@ void Diary::serialize(ofstream& out)const
 	size_t stuIdLen = stuId.size();
 	out.write(reinterpret_cast<const char*>(&stuIdLen), sizeof(stuIdLen));
 	out.write(stuId.c_str(), stuIdLen);
+
+	size_t contentSize = content.size();
+	out.write(reinterpret_cast<const char*>(&contentSize), sizeof(contentSize));
+	for (const auto& entry : content) {
+		size_t entryLen = entry.size();
+		out.write(reinterpret_cast<const char*>(&entryLen), sizeof(entryLen));
+		out.write(entry.c_str(), entryLen);
+	}
 }
 void Diary::deserialize(ifstream& in)
 {
@@ -112,6 +112,9 @@ void Diary::deserialize(ifstream& in)
 
 	size_t nameLen;
 	in.read(reinterpret_cast<char*>(&nameLen), sizeof(nameLen));
+	if (nameLen > in.tellg()) { // 检查读取的长度是否合理
+		throw std::length_error("读取的长度超过文件大小");
+	}
 	name.resize(nameLen);
 	in.read(&name[0], nameLen);
 
@@ -120,15 +123,6 @@ void Diary::deserialize(ifstream& in)
 	place.resize(placeLen);
 	in.read(&place[0], placeLen);
 
-	size_t contentSize;
-	in.read(reinterpret_cast<char*>(&contentSize), sizeof(contentSize));
-	content.resize(contentSize);
-	for (size_t i = 0; i < contentSize; ++i) {
-		size_t entryLen;
-		in.read(reinterpret_cast<char*>(&entryLen), sizeof(entryLen));
-		content[i].resize(entryLen);
-		in.read(&content[i][0], entryLen);
-	}
 
 	in.read(reinterpret_cast<char*>(&rating), sizeof(rating));
 	in.read(reinterpret_cast<char*>(&ratedSize), sizeof(ratedSize));
@@ -143,4 +137,14 @@ void Diary::deserialize(ifstream& in)
 	in.read(reinterpret_cast<char*>(&stuIdLen), sizeof(stuIdLen));
 	stuId.resize(stuIdLen);
 	in.read(&stuId[0], stuIdLen);
+
+	size_t contentSize;
+	in.read(reinterpret_cast<char*>(&contentSize), sizeof(contentSize));
+	content.resize(contentSize);
+	for (size_t i = 0; i < contentSize; ++i) {
+		size_t entryLen;
+		in.read(reinterpret_cast<char*>(&entryLen), sizeof(entryLen));
+		content[i].resize(entryLen);
+		in.read(&content[i][0], entryLen);
+	}
 }
