@@ -154,8 +154,7 @@ void DiaryManager::CompressedStore()
 void DiaryManager::LoadFromCompressedFile() {
 	decompressAndLoad("CompressedDiaries.dat","HafumanCodes.dat", "loadTemp.dat");
 
-	//ifstream inStream("loadTemp.dat", ios::binary);
-	ifstream inStream("temp.dat", ios::binary);
+	ifstream inStream("loadTemp.dat", ios::binary);
 	if (!inStream) {
 		cerr << "无法打开文件: " << "loadTemp.dat" << endl;
 		return;
