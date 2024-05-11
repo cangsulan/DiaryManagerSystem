@@ -34,28 +34,22 @@ void Diary::showDiary() {
 		cout << diaryline << endl;
 	}
 	cout << endl;
+
 	while (true) {
-		cout << "是否对该日记进行评分？" << endl;
-		cout << "1.是的" << endl;
-		cout << "2.不必了，我要返回" << endl;
+		cout << endl << "------------------------" << endl;
+		cout << "对这篇日记，功能可选：" << endl;
+		cout << "1.全文检索~" << endl;
+		cout << "2.我想打评分~" << endl;
+		cout << "3.不必了，我要返回" << endl;
 		int select;
 		cin >> select;
 		if (select == 1) {
-			cout << "请输入 0-10 内的一个整数来 打分：" << endl;
-			int r=5;//同初始默认评分
-			while (true) {
-				cin >> r;
-				if (r >= 0 && r <= 10) {
-					break;
-				}else {
-					cout << "输入有误哦~" << endl;
-				}
-			}
-			this->rating = this->rating * this->ratedSize + r;
-			this->ratedSize++;
-			this->rating = this->rating / this->ratedSize;//得到了平均评分
-			return;
+			//全文检索功能：
+			this->searchContent();
 		}else if (select == 2) {
+			//打评分功能：
+			this->addRating();
+		}else if (select == 3) {
 			return;
 		}
 	}
@@ -72,6 +66,42 @@ void Diary::showDiarylog()
 	cout << "浏览量：" << this->views;
 	printf("\t\t平均评分：%.2f\n", this->rating);//保留2位小数打印！
 	cout << "---------------------------------" << endl;
+}
+
+void Diary::searchContent() {
+	cout << "请输入要 检索 的 关键词：" << endl;
+	string aim;
+	cin >> aim;
+	bool finded=false;
+	for (int i = 0; i < this->content.size(); i++) {
+		if (this->content.at(i).find(aim) != string::npos) {
+			finded = true;
+			cout<<"关键词\""<<aim<<"\" 出现在了 第 "<<(i+1)<<" 行：" << endl;
+			cout << this->content.at(i) << endl << endl;
+		}
+	}
+	if (!finded) {
+		cout << "没能找到关键词 \"" << aim << "\"" << endl << endl;
+	}
+	return;
+}
+
+void Diary::addRating() {
+	cout << "请输入 0-10 内的一个整数来 打分：" << endl;
+	int r = 5;//同初始默认评分
+	while (true) {
+		cin >> r;
+		if (r >= 0 && r <= 10) {
+			break;
+		}
+		else {
+			cout << "输入有误哦~" << endl;
+		}
+	}
+	this->rating = this->rating * this->ratedSize + r;
+	this->ratedSize++;
+	this->rating = this->rating / this->ratedSize;//得到了平均评分
+	return;
 }
 
 void Diary::serialize(ofstream& out)const

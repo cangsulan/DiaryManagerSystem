@@ -26,6 +26,9 @@ public:
 	Diary();//空参构造
 	void serialize(ofstream& out)const;//以二进制方式序列化
 	void deserialize(ifstream& in);//反序列化
+
+	void searchContent();//全文检索功能
+	void addRating();//对这篇日记进行评分
 	void showDiary();
 	void showDiarylog();
 	~Diary();
