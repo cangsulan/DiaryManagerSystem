@@ -106,15 +106,13 @@ void Diary::serialize(ofstream& out)const
 		out.write(entry.c_str(), entryLen);
 	}
 }
+
 void Diary::deserialize(ifstream& in)
 {
 	in.read(reinterpret_cast<char*>(&id), sizeof(id));
 
 	size_t nameLen;
 	in.read(reinterpret_cast<char*>(&nameLen), sizeof(nameLen));
-	if (nameLen > in.tellg()) { // 检查读取的长度是否合理
-		throw std::length_error("读取的长度超过文件大小");
-	}
 	name.resize(nameLen);
 	in.read(&name[0], nameLen);
 

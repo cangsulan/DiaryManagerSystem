@@ -128,7 +128,7 @@ vector<unsigned char> bitStringToBytes(const string& bitString) {
     for (size_t i = 0; i < bitString.length(); i += 8) {
         string byteStr = bitString.substr(i, 8);
         if (byteStr.length() < 8) {
-            byteStr.append(8 - byteStr.length(), '1');
+            byteStr.append(8 - byteStr.length(), '0');
         }
 
         unsigned char byte = static_cast<unsigned char>(bitset<8>(byteStr).to_ulong());
@@ -163,31 +163,31 @@ void compressAndStore(const string& inputFilename, const string& outputFilename)
     //    }
     //}
     //std::cout << "空白字符：" << bainum << std::endl;
-    std::cout << "文件内容:" << std::endl;
-    for (const auto& byte : rawData) {
-        std::cout << std::hex << static_cast<int>(byte) << " "; // 打印为十六进制
-    }
-    std::cout << std::endl;
+    //std::cout << "文件内容:" << std::endl;
+    //for (const auto& byte : rawData) {
+    //    std::cout << std::hex << static_cast<int>(byte) << " "; // 打印为十六进制
+    //}
+    //std::cout << std::endl;
 
-    char* testData = new char[fileSize];
-    for (int i = 0; i < fileSize; i++) {
-        testData[i] = '1';
-    }
-    inputFile.seekg(0, ios::beg);
-    inputFile.read(testData, fileSize);
-    for (int i = 0; i < fileSize; i++) {
-        cout << testData[i];
-    }
-    cout << endl;
-    cout << "--------------------------------------------------------" << endl;
-    cout << endl;
-    delete[] testData;
-    cout << rawData.size() << endl;
-    for (auto& ch2 : rawData) {
-        cout << ch2;
-    }
-    cout << endl;
-    cout << "------------------------" << endl;
+    //char* testData = new char[fileSize];
+    //for (int i = 0; i < fileSize; i++) {
+    //    testData[i] = '1';
+    //}
+    //inputFile.seekg(0, ios::beg);
+    //inputFile.read(testData, fileSize);
+    //for (int i = 0; i < fileSize; i++) {
+    //    cout << testData[i];
+    //}
+    //cout << endl;
+    //cout << "--------------------------------------------------------" << endl;
+    //cout << endl;
+    //delete[] testData;
+    //cout << rawData.size() << endl;
+    //for (auto& ch2 : rawData) {
+    //    cout << ch2;
+    //}
+    //cout << endl;
+    //cout << "------------------------" << endl;
 
 
     inputFile.close();
@@ -200,18 +200,18 @@ void compressAndStore(const string& inputFilename, const string& outputFilename)
     }
     
     
-    /*std::cout << "频率统计:" << std::endl;
+    std::cout << "频率统计:" << std::endl;
     for (const auto& entry : freqMap) {
         std::cout << "字符: " << entry.first << ", 频率: " << entry.second << std::endl;
-    }*/
+    }
     
     
     
     HuffmanNode* root = buildHuffmanTree(freqMap);
 
-    ////test测试：
-    //printHuffmanTree(root);
-    //cout << "----------------------------------------------" << endl;
+    //test测试：
+    printHuffmanTree(root);
+    cout << "----------------------------------------------" << endl;
 
 
     unordered_map<unsigned char, string> huffmanCodes;
@@ -226,18 +226,18 @@ void compressAndStore(const string& inputFilename, const string& outputFilename)
 
     vector<unsigned char> compressedBytes = bitStringToBytes(compressedData);
 
-    //////test检测：
-    //cout << "原来的哈夫曼编码表为： size为 " <<huffmanCodes.size()<< endl;
-    //for (auto& entry2 : huffmanCodes) {
-    //    cout << entry2.first << "  :  " << entry2.second << endl;
-    //}
-    //cout << "--------------------------" << endl;
-    cout << "压缩后的数据 为：" << oct<<compressData << endl;
+    ////test检测：
+    cout << "原来的哈夫曼编码表为： size为 " <<huffmanCodes.size()<< endl;
+    for (auto& entry2 : huffmanCodes) {
+        cout << entry2.first << "  :  " << entry2.second << endl;
+    }
+    cout << "--------------------------" << endl;
+    /*cout << "压缩后的数据 为：" << oct<<compressData << endl;
     cout << "压缩后的字节：  size为 " <<compressedBytes.size()<< endl;
     for (auto&  ch2 : compressedBytes) {
         printf_s("%c", ch2);
     }
-    cout << endl;
+    cout << endl;*/
 
     ofstream outputFile("HafumanCodes.dat", ios::binary);
     if (!outputFile) {
@@ -260,6 +260,9 @@ void compressAndStore(const string& inputFilename, const string& outputFilename)
         cerr << "无法打开文件: " << outputFilename << endl;
         return;
     }
+    //先存储压缩前文件的原本大小：
+    outputFile2.write(reinterpret_cast<const char*>(&fileSize), sizeof(fileSize)); // 存储实际数据长度
+    
     outputFile2.write(reinterpret_cast<const char*>(&compressedBytes[0]), compressedBytes.size());
     outputFile2.close();
 }
@@ -349,67 +352,7 @@ string decompressData(const string& bitString, HuffmanNode* root) {
 }
 
 
-//// 解压缩并加载数据
-//void decompressAndLoad(const string& compressedFilename, const string& outputFilename) {
-//    ifstream inputFile(compressedFilename, ios::binary | ios::ate);
-//    if (!inputFile) {
-//        cerr << "无法打开文件: " << compressedFilename << endl;
-//        return;
-//    }
-//
-//    size_t fileSize = inputFile.tellg();
-//    inputFile.seekg(0, ios::beg);
-//
-//    vector<unsigned char> rawData(fileSize);
-//    inputFile.read(reinterpret_cast<char*>(rawData.data()), fileSize);
-//    inputFile.close();
-//
-//    istringstream dataStream(string(reinterpret_cast<const char*>(rawData.data()), rawData.size()));
-//    
-//    
-//    ifstream inputFile2("HafumanCodes.dat", ios::binary);
-//    if (!inputFile2) {
-//        cerr << "无法打开文件: " << "HafumanCodes.dat" << endl;
-//        return;
-//    }
-//    size_t huffmanTableSize;
-//    inputFile2.read(reinterpret_cast<char*>(&huffmanTableSize), sizeof(huffmanTableSize)); // 读取编码表大小
-//
-//    unordered_map<unsigned char, string> huffmanCodes;
-//    for (size_t i = 0; i < huffmanTableSize; i++) {
-//        unsigned char ch;
-//        inputFile.read(reinterpret_cast<char*>(&ch), 1); // 读取字符
-//
-//        size_t codeLen;
-//        inputFile.read(reinterpret_cast<char*>(&codeLen), sizeof(codeLen)); // 读取编码长度
-//
-//        string code(codeLen, '\0');
-//        inputFile.read(&code[0], codeLen); // 读取编码内容
-//
-//        huffmanCodes[ch] = code; // 添加到哈夫曼编码表
-//    }
-//
-//
-//    //////test检测：
-//    //cout << "解压缩时的哈夫曼编码表为： size为 " << huffmanCodes.size() << endl;
-//    //for (auto& entry2 : huffmanCodes) {
-//    //    cout << entry2.first << "  :  " << entry2.second << endl;
-//    //}
-//    //cout << "--------------------------" << endl;
-//
-//
-//    HuffmanNode* root = rebuildHuffmanTree(huffmanCodes); // 使用编码表重建哈夫曼树
-//
-//    // 使用哈夫曼树来解压缩
-//    /*vector<unsigned char> compressedData(rawData.begin() + dataStream.tellg(), rawData.end());*/
-//    string compressedBitString = MybytesToBitString(rawData);
-//
-//    string decompressedData = decompressData(compressedBitString, root);
-//
-//    ofstream outputFile(outputFilename, ios::binary);
-//    outputFile.write(decompressedData.c_str(), decompressedData.size());
-//    outputFile.close();
-//}
+
 
 void decompressAndLoad(const std::string& compressedFilename, const std::string& huffmanFilename, const std::string& outputFilename) {
     // 打开压缩文件
@@ -422,6 +365,10 @@ void decompressAndLoad(const std::string& compressedFilename, const std::string&
     // 读取压缩文件的内容
     std::streamsize compressedFileSize = compressedFile.tellg();
     compressedFile.seekg(0, std::ios::beg);
+
+    size_t actualSize;
+    compressedFile.read(reinterpret_cast<char*>(&actualSize), sizeof(actualSize)); // 读取实际数据长度
+
 
     std::vector<unsigned char> compressedData(compressedFileSize);
     compressedFile.read(reinterpret_cast<char*>(compressedData.data()), compressedFileSize);
@@ -479,8 +426,8 @@ void decompressAndLoad(const std::string& compressedFilename, const std::string&
     HuffmanNode* root = rebuildHuffmanTree(huffmanCodes);
 
 
-    //test测试：
-    printHuffmanTree(root);
+    ////test测试：
+    //printHuffmanTree(root);
 
 
 
@@ -492,9 +439,9 @@ void decompressAndLoad(const std::string& compressedFilename, const std::string&
     }
 
 
-    //test测试：
-    cout << "压缩后的字节为" << endl;
-    cout << compressedBitString << endl;
+    ////test测试：
+    //cout << "压缩后的字节为" << endl;
+    //cout << compressedBitString << endl;
     
     
     // 使用哈夫曼树进行解压缩
@@ -508,37 +455,41 @@ void decompressAndLoad(const std::string& compressedFilename, const std::string&
     }
 
 
-    // 检查解压缩后的数据
-    std::cout << "解压缩后的数据:" << std::endl;
-    for (char c : decompressedData) {
-        std::cout << std::hex << static_cast<int>(static_cast<unsigned char>(c)) << " "; // 检查数据
-    }
-    std::cout << std::endl;
+    //// 检查解压缩后的数据
+    //std::cout << "解压缩后的数据:" << std::endl;
+    //for (char c : decompressedData) {
+    //    std::cout << std::hex << static_cast<int>(static_cast<unsigned char>(c)) << " "; // 检查数据
+    //}
+    //std::cout << std::endl;
     
+    
+    // 截取实际数据长度
+    std::string truncatedData = decompressedData.substr(0, actualSize); // 确保解压缩后只保留实际数据
 
-    outputFile.write(reinterpret_cast<const char*>(decompressedData.data()), decompressedData.size());
+
+    outputFile.write(truncatedData.c_str(), truncatedData.size());
     outputFile.close();
 
 
-    std::ifstream checkFile(outputFilename, std::ios::binary | std::ios::ate);
-    if (!checkFile) {
-        std::cerr << "无法打开输出文件: " << outputFilename << std::endl;
-        return;
-    }
+    //std::ifstream checkFile(outputFilename, std::ios::binary | std::ios::ate);
+    //if (!checkFile) {
+    //    std::cerr << "无法打开输出文件: " << outputFilename << std::endl;
+    //    return;
+    //}
 
-    size_t checkFileSize = checkFile.tellg(); // 获取文件大小
-    checkFile.seekg(0, std::ios::beg);
+    //size_t checkFileSize = checkFile.tellg(); // 获取文件大小
+    //checkFile.seekg(0, std::ios::beg);
 
-    std::vector<unsigned char> checkData(checkFileSize);
-    checkFile.read(reinterpret_cast<char*>(checkData.data()), checkFileSize);
+    //std::vector<unsigned char> checkData(checkFileSize);
+    //checkFile.read(reinterpret_cast<char*>(checkData.data()), checkFileSize);
 
-    checkFile.close();
+    //checkFile.close();
 
-    // 打印文件内容
-    std::cout << "写入后的文件内容:" << std::endl;
-    for (const auto& byte : checkData) {
-        std::cout << std::hex << static_cast<int>(byte) << " "; // 以十六进制打印
-    }
-    std::cout << std::endl;
+    //// 打印文件内容
+    //std::cout << "写入后的文件内容:" << std::endl;
+    //for (const auto& byte : checkData) {
+    //    std::cout << std::hex << static_cast<int>(byte) << " "; // 以十六进制打印
+    //}
+    //std::cout << std::endl;
 
 }

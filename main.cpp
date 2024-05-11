@@ -3,6 +3,7 @@
 using namespace std;
 extern void testHafuman();
 int main() {
+	//‘À––≤‚ ‘test.cpp
 	testHafuman();
 	system("pause");
 	return 0;

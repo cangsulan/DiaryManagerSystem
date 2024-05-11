@@ -149,6 +149,8 @@ void DiaryManager::CompressedStore()
 	}
 	tempOut.close();
 	compressAndStore("temp.dat", "CompressedDiaries.dat");
+	//生成了压缩后的文件和哈夫曼编码文件，可以删除temp.dat文件了
+	remove("temp.dat");
 }
 
 void DiaryManager::LoadFromCompressedFile() {
@@ -167,5 +169,9 @@ void DiaryManager::LoadFromCompressedFile() {
 	}
 
 	inStream.close();
+	//已经把所有数据都读取完了，现在可以删除所有有关的文件
+	remove("CompressedDiaries.dat");
+	remove("HafumanCodes.dat");
+	remove("loadTemp.dat");
 
 }
