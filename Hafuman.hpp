@@ -96,7 +96,8 @@ void buildHuffmanCodes(HuffmanNode* root, const string& str,
     unordered_map<unsigned char, string>& huffmanCodes) {
     if (!root) return;
 
-    if (root->data != NULL_MARKER) {
+    if (root->left == nullptr && root->right == nullptr) {
+        // 如果是叶子节点，将其对应的字符和编码存储在哈希表中
         huffmanCodes[root->data] = str;
     }
 
@@ -200,18 +201,18 @@ void compressAndStore(const string& inputFilename, const string& outputFilename)
     }
     
     
-    std::cout << "频率统计:" << std::endl;
+    /*std::cout << "频率统计:" << std::endl;
     for (const auto& entry : freqMap) {
         std::cout << "字符: " << entry.first << ", 频率: " << entry.second << std::endl;
-    }
+    }*/
     
     
     
     HuffmanNode* root = buildHuffmanTree(freqMap);
 
-    //test测试：
-    printHuffmanTree(root);
-    cout << "----------------------------------------------" << endl;
+    ////test测试：
+    //printHuffmanTree(root);
+    //cout << "----------------------------------------------" << endl;
 
 
     unordered_map<unsigned char, string> huffmanCodes;
@@ -226,12 +227,12 @@ void compressAndStore(const string& inputFilename, const string& outputFilename)
 
     vector<unsigned char> compressedBytes = bitStringToBytes(compressedData);
 
-    ////test检测：
-    cout << "原来的哈夫曼编码表为： size为 " <<huffmanCodes.size()<< endl;
-    for (auto& entry2 : huffmanCodes) {
-        cout << entry2.first << "  :  " << entry2.second << endl;
-    }
-    cout << "--------------------------" << endl;
+    //////test检测：
+    //cout << "原来的哈夫曼编码表为： size为 " <<huffmanCodes.size()<< endl;
+    //for (auto& entry2 : huffmanCodes) {
+    //    cout << entry2.first << "  :  " << entry2.second << endl;
+    //}
+    //cout << "--------------------------" << endl;
     /*cout << "压缩后的数据 为：" << oct<<compressData << endl;
     cout << "压缩后的字节：  size为 " <<compressedBytes.size()<< endl;
     for (auto&  ch2 : compressedBytes) {
